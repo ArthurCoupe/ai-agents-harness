@@ -1,6 +1,6 @@
-# claude-code-harness
+# ai-agents-harness
 
-Um jeito de desenvolver com Claude Code em que o agente não decide sozinho quando terminou.
+Um jeito de desenvolver com agentes de IA em que o agente não decide sozinho quando terminou.
 Cada etapa tem uma condição de parada que a máquina verifica: um hook que barra o comando
 destrutivo, um portão que reprova o PR, um revisor que não viu o que o implementador viu.
 
@@ -9,9 +9,9 @@ O repositório tem quatro peças, e todas rodam ou são lidas pelo agente:
 | Peça | Onde | O que é |
 |---|---|---|
 | Blueprint | [`blueprint/`](blueprint/) | O método escrito: fases, delegabilidade, portões, orquestração. Cerca de 4.700 linhas, mais o dicionário canônico de nomes. |
-| Harness de projeto | [`template-projeto/`](template-projeto/) | Os hooks de limite e os scripts de portão que entram em cada projeto, com o `CLAUDE.md` de partida. |
-| Camada de usuário | [`usuario/`](usuario/) | 24 agentes especialistas e 3 skills que valem em qualquer projeto, instalados em `~/.claude/`. |
-| Instaladores | [`instalar-harness.mjs`](instalar-harness.mjs), [`instalar-usuario.mjs`](instalar-usuario.mjs) | Levam o harness para um projeto e a camada de usuário para `~/.claude/`, sem sobrescrever nada em silêncio. |
+| Harness de projeto | [`template-projeto/`](template-projeto/) | Os hooks de limite e os scripts de portão que entram em cada projeto, com o arquivo de instruções de partida do agente. |
+| Camada de usuário | [`usuario/`](usuario/) | 24 agentes especialistas e 3 skills que valem em qualquer projeto, instalados na pasta de configuração do agente no seu usuário. |
+| Instaladores | [`instalar-harness.mjs`](instalar-harness.mjs), [`instalar-usuario.mjs`](instalar-usuario.mjs) | Levam o harness para um projeto e a camada de usuário para a pasta do agente, sem sobrescrever nada em silêncio. |
 
 Tudo é Node puro, sem dependência, escrito e testado no Windows 11 com Node 24.
 
@@ -51,8 +51,8 @@ visível.
 
 ### 2. Hooks de limite, testados como código
 
-Três hooks em [`template-projeto/.claude/hooks/`](template-projeto/.claude/hooks/), registrados em
-`PreToolUse`:
+Três hooks no [template de projeto](template-projeto/), registrados no evento que roda antes de
+cada ferramenta do agente (`PreToolUse`):
 
 | Hook | Barra |
 |---|---|
@@ -142,15 +142,16 @@ O instalador detecta o perfil pelo código e pede confirmação. Arquivo que já
 `<nome>.harness-novo` ao lado, para você juntar à mão. No fim ele imprime o bloco de `scripts`
 do perfil para o `package.json` e roda `hooks:check` no destino.
 
-Instale os agentes e as skills em `~/.claude/`, também pelo `--dry-run` primeiro:
+Instale os agentes e as skills na pasta de configuração do agente no seu usuário, também pelo
+`--dry-run` primeiro, que mostra o destino de cada arquivo:
 
 ```bash
 node instalar-usuario.mjs --dry-run
 ```
 
-Arquivo que já existe em `~/.claude/` com conteúdo diferente fica como está e sai listado como
+Arquivo que já existe no destino com conteúdo diferente fica como está e sai listado como
 pendente. Só `--sobrescrever` troca, e sempre com backup ao lado. `--exportar <item>` faz o
-caminho inverso, de `~/.claude/` para `usuario/`, e recusa arquivo com cara de segredo.
+caminho inverso, do destino para `usuario/`, e recusa arquivo com cara de segredo.
 
 ## Testes
 
@@ -158,7 +159,7 @@ caminho inverso, de `~/.claude/` para `usuario/`, e recusa arquivo com cara de s
 
 - `hooks:check`: 66 casos sobre os três hooks e o registro deles no `settings.json`.
 - `instalar-usuario.test.mjs`: 166 verificações do instalador da camada de usuário, num home falso
-  e numa raiz falsa. Nunca toca o `~/.claude/` de verdade: antes do primeiro caso, uma sonda
+  e numa raiz falsa. Nunca toca a pasta de usuário de verdade: antes do primeiro caso, uma sonda
   confere que o processo filho enxerga o home falso, e para se não enxergar. Os segredos falsos
   são gerados em tempo de execução.
 
@@ -172,11 +173,11 @@ blueprint/
   blueprint-sdlc-agent-ready.md   o método, Partes 0 a 16
   _DICIONARIO-CANONICO.md         nomes de portão, tiers, verify por perfil
   perfis/                         site, app, saas, crm
-template-projeto/
-  .claude/hooks/                  os três hooks de limite e o payload.mjs
-  .claude/settings.json           o registro dos hooks
-  scripts/                        profile-check, tree-check, hooks-check, headers-check
-  CLAUDE.md, LEIA-ME.md, .perfil, package.scripts.json
+template-projeto/                 o que o instalador leva para o projeto: os três hooks de
+                                  limite e o payload.mjs, o registro dos hooks, os scripts de
+                                  portão (profile-check, tree-check, hooks-check, headers-check),
+                                  as instruções de partida, LEIA-ME.md, .perfil e
+                                  package.scripts.json
 usuario/
   agents/                         24 especialistas
   skills/                         intake, onda-paralela, verificar-feature
@@ -199,8 +200,8 @@ Licença MIT, com os dois avisos de copyright em [`LICENSE`](LICENSE).
 
 ## In English
 
-A Claude Code harness where the agent never decides on its own that it is done. Every step has a
-machine-checked stop condition.
+A harness for building software with AI agents, where the agent never decides on its own that it
+is done. Every step has a machine-checked stop condition.
 
 - **24 specialist agents** with a delegation level (D0 to D3) and a gate that closes each one's
   work. Implementers never commit; the orchestrator does, one commit per task. Parallel waves only
