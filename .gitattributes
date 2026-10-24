@@ -1,0 +1,3 @@
+# Fonte de ~/.claude/: com CRLF, a skill intake perdeu a descricao na listagem do Claude Code
+# (2026-09-28). LF no disco, como os originais, qualquer que seja o core.autocrlf.
+usuario/** text eol=lf

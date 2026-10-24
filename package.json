@@ -1,0 +1,11 @@
+{
+  "name": "claude-code-harness",
+  "private": true,
+  "description": "Harness para desenvolver com Claude Code: agentes especialistas, hooks de limite testados, portões por perfil de projeto e revisão em duas passadas.",
+  "license": "MIT",
+  "scripts": {
+    "test": "node template-projeto/scripts/hooks-check.mjs && node instalar-usuario.test.mjs",
+    "hooks:check": "node template-projeto/scripts/hooks-check.mjs",
+    "test:instalador": "node instalar-usuario.test.mjs"
+  }
+}

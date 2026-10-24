@@ -1,0 +1,221 @@
+{
+  "_leia-me": "O bloco de scripts para colar no package.json do projeto. E A INTERFACE: nome de portao (dicionario secao 2) -> comando. Trocar de stack e trocar este arquivo; o harness, os hooks e o CI so conhecem nomes. Quatro blocos, um por perfil. Copie APENAS o bloco do perfil que esta em .perfil, e cole o conteudo de scripts dentro do seu package.json.",
+
+  "_como-usar": [
+    "1. Leia .perfil na raiz. Copie o bloco de mesmo nome abaixo.",
+    "2. Cole o conteudo de scripts dentro do package.json. NAO copie as chaves _perfil nem _leia-me: package.json nao aceita comentario, e chave com _ na frente e ruido.",
+    "3. Troque todo valor que comeca com ESTADO 0 pelo comando real da sua stack. Ate voce trocar, o portao existe, imprime que nao tem comando e sai 0 - estado 0 da Parte 14. Ele nao mente que rodou.",
+    "4. Portao marcado NAO SE APLICA existe mesmo assim e sai 0 apontando para a ADR. Isso e proposital: script not found e indistinguivel de setup quebrado.",
+    "5. Usa npm em vez de pnpm? Troque pnpm por npm run em toda corrente de verify. As correntes usam && - valido dentro do valor de um script porque pnpm e npm invocam o cmd.exe. Nao cole a corrente direto no PowerShell 5.1: la && e erro de parse. No terminal chame pnpm verify.",
+    "6. Aspas simples nao entram aqui em valor nenhum: cmd.exe nao as interpreta. Nada de bash, nada de jq, nada de .sh."
+  ],
+
+  "_stack-sugerida": {
+    "_nota": "Substituicoes tipicas para a stack observada (TypeScript, React + Vite, Express, Vitest, Supabase, Vercel). Use so depois de a ferramenta estar instalada no projeto: portao que aponta para binario ausente reprova por setup, nao por defeito.",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "test": "vitest run",
+    "build": "vite build",
+    "test:authz": "vitest run tests/authz",
+    "test:idor": "vitest run tests/idor",
+    "test:rls": "vitest run tests/rls",
+    "test:auth": "vitest run tests/auth",
+    "test:input": "vitest run tests/input",
+    "test:contract": "vitest run tests/contract",
+    "test:logging": "vitest run tests/logging",
+    "test:e2e": "playwright test",
+    "test:a11y": "playwright test tests/a11y"
+  },
+
+  "SITE": {
+    "_perfil": "SITE - use este bloco quando .perfil contem SITE. Nao ha sessao de usuario: a P1 do dicionario secao 4 respondeu NAO. Todo portao de controle de acesso sai 0 apontando para a ADR.",
+    "scripts": {
+      "verify": "pnpm profile:check && pnpm lint && pnpm build && pnpm size:check && pnpm test:meta && pnpm links:check && pnpm bundle:scan",
+      "verify:ci": "pnpm pr:check && pnpm hooks:check && pnpm deps:check && pnpm sast && pnpm test:a11y && pnpm lh:check && pnpm test:input",
+      "verify:deploy": "pnpm headers:check && pnpm test:e2e",
+
+      "profile:check": "node scripts/profile-check.mjs",
+      "tree:check": "node scripts/tree-check.mjs",
+      "hooks:check": "node scripts/hooks-check.mjs",
+      "pr:check": "echo ESTADO 0 pr:check: sem comando. Troque pelo script que compara o diff com o teto de linhas - dicionario 2.7",
+      "cost:check": "echo cost:check nao tem implementacao. Nome reservado, dicionario 2.7 nota 6. Medir custo por feature e D1: voce le o numero e decide",
+
+      "typecheck": "echo typecheck CONDICIONAL em SITE: obrigatorio se existir qualquer .ts no projeto - dicionario 2.1 nota 1. Passou a existir, troque este valor e acrescente a corrente de verify",
+      "lint": "echo ESTADO 0 lint: sem comando. Troque por eslint . depois de instalar o eslint - dicionario 2.1",
+      "test": "echo test CONDICIONAL em SITE: obrigatorio se existir logica propria - dicionario 2.1 nota 1. Passou a existir, troque este valor e acrescente a corrente de verify",
+      "build": "echo ESTADO 0 build: sem comando. Troque pelo build da sua stack - dicionario 2.1",
+
+      "test:authz": "echo test:authz NAO SE APLICA ao perfil SITE - ver docs/adr/0001-perfil-e-portoes.md",
+      "test:idor": "echo test:idor NAO SE APLICA ao perfil SITE - ver docs/adr/0001-perfil-e-portoes.md",
+      "test:rls": "echo test:rls NAO SE APLICA ao perfil SITE - ver docs/adr/0001-perfil-e-portoes.md",
+      "test:auth": "echo test:auth NAO SE APLICA ao perfil SITE - ver docs/adr/0001-perfil-e-portoes.md",
+
+      "test:input": "echo test:input CONDICIONAL em SITE: obrigatorio se houver formulario - dicionario 2.3 nota 3",
+      "test:contract": "echo test:contract NAO SE APLICA ao perfil SITE - ver docs/adr/0001-perfil-e-portoes.md",
+      "test:logging": "echo test:logging NAO SE APLICA ao perfil SITE - ver docs/adr/0001-perfil-e-portoes.md",
+      "test:erasure": "echo test:erasure CONDICIONAL: obrigatorio assim que houver dado pessoal, em qualquer perfil - dicionario 2.3 nota 4",
+      "test:import": "echo test:import NAO SE APLICA ao perfil SITE - ver docs/adr/0001-perfil-e-portoes.md",
+      "test:dedupe": "echo test:dedupe NAO SE APLICA ao perfil SITE - ver docs/adr/0001-perfil-e-portoes.md",
+      "test:read-audit": "echo test:read-audit NAO SE APLICA ao perfil SITE - ver docs/adr/0001-perfil-e-portoes.md",
+
+      "test:a11y": "echo ESTADO 0 test:a11y: sem comando. Troque pelo runner com axe - dicionario 2.4",
+      "size:check": "echo ESTADO 0 size:check: sem comando. Troque pelo verificador de orcamento de bundle - dicionario 2.4",
+      "test:meta": "echo ESTADO 0 test:meta: sem comando. Troque pelo script que afirma title, description, canonical e OG por rota - dicionario 2.4",
+      "links:check": "echo ESTADO 0 links:check: sem comando. Troque pelo verificador de link interno sobre o build - dicionario 2.4",
+      "lh:check": "echo ESTADO 0 lh:check: sem comando. Troque pelo Lighthouse com o limiar declarado - dicionario 2.4",
+
+      "secrets:scan": "echo ESTADO 0 secrets:scan: sem comando. Troque pelo scanner da arvore de trabalho - dicionario 2.5",
+      "secrets:scan:full": "echo ESTADO 0 secrets:scan:full: sem comando. Troque pelo scanner do historico inteiro. Tier 5, noturno - dicionario 3",
+      "bundle:scan": "echo ESTADO 0 bundle:scan: sem comando. Troque pelo scanner de segredo no artefato publicado - dicionario 2.5",
+      "deps:check": "echo ESTADO 0 deps:check: sem comando. Troque pela auditoria de dependencia de producao - dicionario 2.5",
+      "sast": "echo sast CONDICIONAL em SITE - dicionario 2.5. Havendo logica propria, troque este valor",
+      "headers:check": "node scripts/headers-check.mjs",
+
+      "test:e2e": "echo test:e2e CONDICIONAL em SITE: obrigatorio se houver fluxo de mais de um passo - dicionario 2.6 nota 5"
+    }
+  },
+
+  "APP": {
+    "_perfil": "APP - use este bloco quando .perfil contem APP. Ha sessao de usuario, o dado principal e de quem usa o sistema e clientes diferentes nao precisam ficar invisiveis entre si: a P2 e a P3 do dicionario secao 4 responderam NAO. Ferramenta interna de um cliente so, com login e dado de quem usa, e APP - nao CRM.",
+    "scripts": {
+      "verify": "pnpm profile:check && pnpm lint && pnpm typecheck && pnpm test && pnpm build && pnpm size:check && pnpm test:authz && pnpm test:idor && pnpm bundle:scan",
+      "verify:ci": "pnpm pr:check && pnpm hooks:check && pnpm deps:check && pnpm sast && pnpm test:a11y && pnpm test:auth && pnpm test:contract && pnpm test:input && pnpm test:logging && pnpm test:rls && pnpm test:erasure",
+      "verify:deploy": "pnpm headers:check && pnpm test:e2e",
+
+      "profile:check": "node scripts/profile-check.mjs",
+      "tree:check": "node scripts/tree-check.mjs",
+      "hooks:check": "node scripts/hooks-check.mjs",
+      "pr:check": "echo ESTADO 0 pr:check: sem comando. Troque pelo script que compara o diff com o teto de linhas - dicionario 2.7",
+      "cost:check": "echo cost:check nao tem implementacao. Nome reservado, dicionario 2.7 nota 6. Medir custo por feature e D1: voce le o numero e decide",
+
+      "typecheck": "echo ESTADO 0 typecheck: sem comando. Troque por tsc --noEmit - dicionario 2.1",
+      "lint": "echo ESTADO 0 lint: sem comando. Troque por eslint . depois de instalar o eslint - dicionario 2.1",
+      "test": "echo ESTADO 0 test: sem comando. Troque pelo runner unitario e de integracao - dicionario 2.1",
+      "build": "echo ESTADO 0 build: sem comando. Troque pelo build da sua stack - dicionario 2.1",
+
+      "test:authz": "echo ESTADO 0 test:authz: sem comando. Troque pelo teste da matriz papel x acao - dicionario 2.2",
+      "test:idor": "echo ESTADO 0 test:idor: sem comando. Troque pelo teste que exige 404, nao 403, em recurso de outro dono - dicionario 2.2",
+      "test:rls": "echo test:rls CONDICIONAL em APP: so se o navegador falar direto com o banco via BaaS - dicionario 2.2 nota 2. Com API propria na frente, o portao de isolamento e test:authz mais test:idor",
+      "test:auth": "echo ESTADO 0 test:auth: sem comando. Troque pelo teste de sessao, rotacao de refresh e enumeracao de usuario - dicionario 2.2",
+
+      "test:input": "echo ESTADO 0 test:input: sem comando. Troque pelo teste de schema strict, sanitizacao de saida e upload por magic bytes - dicionario 2.3",
+      "test:contract": "echo ESTADO 0 test:contract: sem comando. Troque pelo teste que afirma a resposta real da API contra o schema - dicionario 2.3",
+      "test:logging": "echo ESTADO 0 test:logging: sem comando. Troque pelo teste que afirma ausencia de PII em log - dicionario 2.3",
+      "test:erasure": "echo test:erasure CONDICIONAL: obrigatorio assim que houver dado pessoal - dicionario 2.3 nota 4. Cobre backup, replica, cache e indice",
+      "test:import": "echo test:import NAO SE APLICA ao perfil APP - ver docs/adr/0001-perfil-e-portoes.md",
+      "test:dedupe": "echo test:dedupe NAO SE APLICA ao perfil APP - ver docs/adr/0001-perfil-e-portoes.md",
+      "test:read-audit": "echo test:read-audit NAO SE APLICA ao perfil APP - ver docs/adr/0001-perfil-e-portoes.md",
+
+      "test:a11y": "echo ESTADO 0 test:a11y: sem comando. Troque pelo runner com axe - dicionario 2.4",
+      "size:check": "echo ESTADO 0 size:check: sem comando. Troque pelo verificador de orcamento de bundle - dicionario 2.4",
+      "test:meta": "echo test:meta CONDICIONAL em APP - dicionario 2.4. Havendo rota publica indexavel, troque este valor",
+      "links:check": "echo links:check CONDICIONAL em APP - dicionario 2.4. Havendo rota publica indexavel, troque este valor",
+      "lh:check": "echo lh:check CONDICIONAL em APP - dicionario 2.4. Havendo rota publica indexavel, troque este valor",
+
+      "secrets:scan": "echo ESTADO 0 secrets:scan: sem comando. Troque pelo scanner da arvore de trabalho - dicionario 2.5",
+      "secrets:scan:full": "echo ESTADO 0 secrets:scan:full: sem comando. Troque pelo scanner do historico inteiro. Tier 5, noturno - dicionario 3",
+      "bundle:scan": "echo ESTADO 0 bundle:scan: sem comando. Troque pelo scanner de segredo no artefato publicado - dicionario 2.5",
+      "deps:check": "echo ESTADO 0 deps:check: sem comando. Troque pela auditoria de dependencia de producao - dicionario 2.5",
+      "sast": "echo ESTADO 0 sast: sem comando. Troque pelo analisador estatico - dicionario 2.5",
+      "headers:check": "node scripts/headers-check.mjs",
+
+      "test:e2e": "echo ESTADO 0 test:e2e: sem comando. Troque pelo runner E2E contra a aplicacao de verdade. Tier 4 - dicionario 2.6"
+    }
+  },
+
+  "SAAS": {
+    "_perfil": "SAAS - use este bloco quando .perfil contem SAAS. Clientes diferentes precisam ficar invisiveis um para o outro, e o dado principal e do proprio usuario: a P2 do dicionario secao 4 respondeu NAO e a P3 respondeu SIM. test:rls deixa de ser condicional.",
+    "scripts": {
+      "verify": "pnpm profile:check && pnpm lint && pnpm typecheck && pnpm test && pnpm build && pnpm size:check && pnpm test:authz && pnpm test:idor && pnpm test:input && pnpm test:logging && pnpm bundle:scan",
+      "verify:ci": "pnpm pr:check && pnpm hooks:check && pnpm deps:check && pnpm sast && pnpm test:a11y && pnpm test:auth && pnpm test:contract && pnpm test:rls && pnpm test:erasure",
+      "verify:deploy": "pnpm headers:check && pnpm test:e2e",
+
+      "profile:check": "node scripts/profile-check.mjs",
+      "tree:check": "node scripts/tree-check.mjs",
+      "hooks:check": "node scripts/hooks-check.mjs",
+      "pr:check": "echo ESTADO 0 pr:check: sem comando. Troque pelo script que compara o diff com o teto de linhas - dicionario 2.7",
+      "cost:check": "echo cost:check nao tem implementacao. Nome reservado, dicionario 2.7 nota 6. Medir custo por feature e D1: voce le o numero e decide",
+
+      "typecheck": "echo ESTADO 0 typecheck: sem comando. Troque por tsc --noEmit - dicionario 2.1",
+      "lint": "echo ESTADO 0 lint: sem comando. Troque por eslint . depois de instalar o eslint - dicionario 2.1",
+      "test": "echo ESTADO 0 test: sem comando. Troque pelo runner unitario e de integracao - dicionario 2.1",
+      "build": "echo ESTADO 0 build: sem comando. Troque pelo build da sua stack - dicionario 2.1",
+
+      "test:authz": "echo ESTADO 0 test:authz: sem comando. Troque pelo teste da matriz papel x acao - dicionario 2.2",
+      "test:idor": "echo ESTADO 0 test:idor: sem comando. Troque pelo teste que exige 404, nao 403, em recurso de outro dono - dicionario 2.2",
+      "test:rls": "echo ESTADO 0 test:rls: sem comando. Troque pelo teste de isolamento no banco: le, grava, sem contexto, e toda tabela com RLS - dicionario 2.2",
+      "test:auth": "echo ESTADO 0 test:auth: sem comando. Troque pelo teste de sessao, rotacao de refresh e enumeracao de usuario - dicionario 2.2",
+
+      "test:input": "echo ESTADO 0 test:input: sem comando. Troque pelo teste de schema strict, sanitizacao de saida e upload por magic bytes - dicionario 2.3",
+      "test:contract": "echo ESTADO 0 test:contract: sem comando. Troque pelo teste que afirma a resposta real da API contra o schema - dicionario 2.3",
+      "test:logging": "echo ESTADO 0 test:logging: sem comando. Troque pelo teste que afirma ausencia de PII em log - dicionario 2.3",
+      "test:erasure": "echo test:erasure CONDICIONAL: obrigatorio assim que houver dado pessoal - dicionario 2.3 nota 4. Cobre backup, replica, cache e indice",
+      "test:import": "echo test:import NAO SE APLICA ao perfil SAAS - ver docs/adr/0001-perfil-e-portoes.md",
+      "test:dedupe": "echo test:dedupe NAO SE APLICA ao perfil SAAS - ver docs/adr/0001-perfil-e-portoes.md",
+      "test:read-audit": "echo test:read-audit NAO SE APLICA ao perfil SAAS - ver docs/adr/0001-perfil-e-portoes.md",
+
+      "test:a11y": "echo ESTADO 0 test:a11y: sem comando. Troque pelo runner com axe - dicionario 2.4",
+      "size:check": "echo size:check CONDICIONAL em SAAS - dicionario 2.4. Havendo orcamento de bundle declarado, troque este valor",
+      "test:meta": "echo test:meta NAO SE APLICA ao perfil SAAS - ver docs/adr/0001-perfil-e-portoes.md",
+      "links:check": "echo links:check NAO SE APLICA ao perfil SAAS - ver docs/adr/0001-perfil-e-portoes.md",
+      "lh:check": "echo lh:check NAO SE APLICA ao perfil SAAS - ver docs/adr/0001-perfil-e-portoes.md",
+
+      "secrets:scan": "echo ESTADO 0 secrets:scan: sem comando. Troque pelo scanner da arvore de trabalho - dicionario 2.5",
+      "secrets:scan:full": "echo ESTADO 0 secrets:scan:full: sem comando. Troque pelo scanner do historico inteiro. Tier 5, noturno - dicionario 3",
+      "bundle:scan": "echo ESTADO 0 bundle:scan: sem comando. Troque pelo scanner de segredo no artefato publicado - dicionario 2.5",
+      "deps:check": "echo ESTADO 0 deps:check: sem comando. Troque pela auditoria de dependencia de producao - dicionario 2.5",
+      "sast": "echo ESTADO 0 sast: sem comando. Troque pelo analisador estatico - dicionario 2.5",
+      "headers:check": "node scripts/headers-check.mjs",
+
+      "test:e2e": "echo ESTADO 0 test:e2e: sem comando. Troque pelo runner E2E contra a aplicacao de verdade. Tier 4 - dicionario 2.6"
+    }
+  },
+
+  "CRM": {
+    "_perfil": "CRM - use este bloco quando .perfil contem CRM. O dado principal e de pessoa que NAO e usuaria do sistema: a P2 do dicionario secao 4 respondeu SIM. A P3 decide so a variante: em CRM single-tenant, test:rls sai 0 com a variante registrada em ADR (dicionario 2.2 nota 7); nenhum outro portao da secao 2 sai 0 por nao se aplicar.",
+    "scripts": {
+      "verify": "pnpm profile:check && pnpm lint && pnpm typecheck && pnpm test && pnpm build && pnpm size:check && pnpm test:authz && pnpm test:idor && pnpm test:input && pnpm test:logging && pnpm test:dedupe && pnpm bundle:scan",
+      "verify:ci": "pnpm pr:check && pnpm hooks:check && pnpm deps:check && pnpm sast && pnpm test:a11y && pnpm test:auth && pnpm test:contract && pnpm test:rls && pnpm test:erasure && pnpm test:import && pnpm test:read-audit",
+      "verify:deploy": "pnpm headers:check && pnpm test:e2e",
+
+      "profile:check": "node scripts/profile-check.mjs",
+      "tree:check": "node scripts/tree-check.mjs",
+      "hooks:check": "node scripts/hooks-check.mjs",
+      "pr:check": "echo ESTADO 0 pr:check: sem comando. Troque pelo script que compara o diff com o teto de linhas - dicionario 2.7",
+      "cost:check": "echo cost:check nao tem implementacao. Nome reservado, dicionario 2.7 nota 6. Medir custo por feature e D1: voce le o numero e decide",
+
+      "typecheck": "echo ESTADO 0 typecheck: sem comando. Troque por tsc --noEmit - dicionario 2.1",
+      "lint": "echo ESTADO 0 lint: sem comando. Troque por eslint . depois de instalar o eslint - dicionario 2.1",
+      "test": "echo ESTADO 0 test: sem comando. Troque pelo runner unitario e de integracao - dicionario 2.1",
+      "build": "echo ESTADO 0 build: sem comando. Troque pelo build da sua stack - dicionario 2.1",
+
+      "test:authz": "echo ESTADO 0 test:authz: sem comando. Troque pelo teste da matriz papel x acao - dicionario 2.2",
+      "test:idor": "echo ESTADO 0 test:idor: sem comando. Troque pelo teste que exige 404, nao 403, em recurso de outro dono - dicionario 2.2",
+      "test:rls": "echo ESTADO 0 test:rls: sem comando. Troque pelo teste de isolamento no banco: le, grava, sem contexto, e toda tabela com RLS - dicionario 2.2",
+      "test:auth": "echo ESTADO 0 test:auth: sem comando. Troque pelo teste de sessao, rotacao de refresh e enumeracao de usuario - dicionario 2.2",
+
+      "test:input": "echo ESTADO 0 test:input: sem comando. Troque pelo teste de schema strict, sanitizacao de saida e upload por magic bytes - dicionario 2.3",
+      "test:contract": "echo ESTADO 0 test:contract: sem comando. Troque pelo teste que afirma a resposta real da API contra o schema - dicionario 2.3",
+      "test:logging": "echo ESTADO 0 test:logging: sem comando. Troque pelo teste que afirma ausencia de PII em log - dicionario 2.3",
+      "test:erasure": "echo ESTADO 0 test:erasure: sem comando. Troque pelo teste de eliminacao de titular. Obrigatorio em CRM, e cobre backup, replica, cache e indice - dicionario 2.3",
+      "test:import": "echo ESTADO 0 test:import: sem comando. Troque pelo teste de importacao em massa: linha invalida, tamanho, CSV injection - dicionario 2.3",
+      "test:dedupe": "echo ESTADO 0 test:dedupe: sem comando. Troque pelo teste de merge por chave deterministica. Heuristica sugere e para - dicionario 2.3",
+      "test:read-audit": "echo ESTADO 0 test:read-audit: sem comando. Troque pelo teste que afirma rastro em leitura de dado de terceiro - dicionario 2.3",
+
+      "test:a11y": "echo ESTADO 0 test:a11y: sem comando. Troque pelo runner com axe - dicionario 2.4",
+      "size:check": "echo size:check CONDICIONAL em CRM - dicionario 2.4. Havendo orcamento de bundle declarado, troque este valor",
+      "test:meta": "echo test:meta NAO SE APLICA ao perfil CRM - ver docs/adr/0001-perfil-e-portoes.md",
+      "links:check": "echo links:check NAO SE APLICA ao perfil CRM - ver docs/adr/0001-perfil-e-portoes.md",
+      "lh:check": "echo lh:check NAO SE APLICA ao perfil CRM - ver docs/adr/0001-perfil-e-portoes.md",
+
+      "secrets:scan": "echo ESTADO 0 secrets:scan: sem comando. Troque pelo scanner da arvore de trabalho - dicionario 2.5",
+      "secrets:scan:full": "echo ESTADO 0 secrets:scan:full: sem comando. Troque pelo scanner do historico inteiro. Tier 5, noturno - dicionario 3",
+      "bundle:scan": "echo ESTADO 0 bundle:scan: sem comando. Troque pelo scanner de segredo no artefato publicado - dicionario 2.5",
+      "deps:check": "echo ESTADO 0 deps:check: sem comando. Troque pela auditoria de dependencia de producao - dicionario 2.5",
+      "sast": "echo ESTADO 0 sast: sem comando. Troque pelo analisador estatico - dicionario 2.5",
+      "headers:check": "node scripts/headers-check.mjs",
+
+      "test:e2e": "echo ESTADO 0 test:e2e: sem comando. Troque pelo runner E2E contra a aplicacao de verdade. Tier 4 - dicionario 2.6"
+    }
+  }
+}
