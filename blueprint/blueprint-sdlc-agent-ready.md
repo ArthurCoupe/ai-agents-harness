@@ -1488,7 +1488,7 @@ Saída binária. Os testes vêm **antes** dos scanners: cobrem A01 e falham mais
 
 ---
 
-**A frase que eu manteria, ajustada:** a IA não deixou essas portas abertas de sacanagem —
+**A conclusão:** a IA não deixou essas portas abertas de sacanagem —
 ela fez o que você pediu, e ninguém pede "e deixa trancado". Mas a conclusão não é "lembre
 de colocar segurança no prompt". Lembrar é probabilístico, e você vai esquecer numa
 sexta-feira às 19h. A conclusão é: **segurança é o requisito que mais precisa virar portão,
@@ -1546,7 +1546,7 @@ da modularidade da F3).
 
 ## 4.3 Sobre estruturas de dados no dia a dia
 
-O ponto do vídeo sobre fundamentos aparece aqui, de forma concreta e mensurável:
+O ponto sobre estrutura de dados aparece aqui, de forma concreta e mensurável:
 
 ```ts
 // O(n·m) — o padrão que aparece sozinho quando ninguém está olhando
@@ -2038,7 +2038,7 @@ checkout. Página que só apresenta conteúdo já é coberta por `links:check` e
 | `profile:check` | O perfil declarado ainda corresponde ao código | ✅ | ✅ | ✅ | ✅ |
 | `tree:check` | Árvore de trabalho limpa: nada modificado, nada em stage, nada solto | ✅ | ✅ | ✅ | ✅ |
 | `pr:check` | Diff dentro do teto de linhas | ✅ | ✅ | ✅ | ✅ |
-| `hooks:check` | Todo hook responde certo nos três casos, inclusive stdin `null` | ✅ | ✅ | ✅ | ✅ |
+| `hooks:check` | Todo hook responde certo nos quatro payloads ilegíveis e está registrado no `settings.json` | ✅ | ✅ | ✅ | ✅ |
 | `cost:check` | Custo da feature dentro do orçamento declarado | ⚠️⁶ | ⚠️⁶ | ⚠️⁶ | ⚠️⁶ |
 
 ⁶ Nome reservado, **sem script em `scripts/`** (dicionário §2.7): custo por feature é **D1** (12.7).
@@ -2084,8 +2084,8 @@ o 5. **Teto não negocia com escopo; escopo é que muda de tier.**
 
 **Os portões de processo têm tier declarado** (dicionário §2.7): `profile:check` e `tree:check` são
 tier 2; `pr:check` e `hooks:check`, tier 3; `cost:check` tem o tier 3 reservado e nenhum script, e
-até existir o número é lido por você (12.7). `hooks:check` foi medido nesta máquina em **2,2 s para
-os 53 casos** — mediana de sete execuções, método em `scripts/README.md` —, caberia nos 90 s do
+até existir o número é lido por você (12.7). `hooks:check` foi medido no Windows 11 com Node 24 em **2,0 s
+para os 66 casos** — mediana de sete execuções, método em `scripts/README.md` —, caberia nos 90 s do
 tier 2 e fica no 3 porque o custo cresce a cada hook novo.
 
 ---
@@ -2689,7 +2689,7 @@ interface). A mecânica:
 
 No CI o checkout é efêmero e o teto apertado some — o CI só reprova subida, que é o correto;
 quem commita o teto apertado é o tier 1 local. O baseline o agente não edita, senão o D2 da
-Parte 0.3 se resolve subindo o teto. Quem impõe isso é `scripts/hooks/protege-catraca.mjs`:
+Parte 0.3 se resolve subindo o teto. Quem impõe isso é `.claude/hooks/protege-catraca.mjs`:
 `PreToolUse` com matcher `Write|Edit`, fail-closed, barrando `*baseline*.json`,
 `*baseline*.txt`, `.catraca/**` e `*.lintbaseline*`, com dois códigos de saída (`0` libera,
 `2` bloqueia). Quem grava o baseline legitimamente é o próprio alvo do portão, que roda como
@@ -2877,7 +2877,7 @@ que decide se foi susto ou incidente é o comportamento **na falha**, pelo crit�
 Formatar o arquivo tocado é melhoria: se o formatador não rodou, o pior caso é um diff feio.
 Impedir `prisma migrate reset` é limite: sem inspecionar o comando, o hook não tem como afirmar
 que ele é seguro. **Fail-closed não é "quebrou, bloqueia" — é "não libera o que não conseguiu
-provar seguro"**, que é o que os três hooks de `scripts/hooks/` fazem.
+provar seguro"**, que é o que os três hooks de `.claude/hooks/` fazem.
 
 **Matcher estreito é parte do contrato do hook fail-closed:** se ele só dispara em comandos de
 terminal, o raio de explosão de um bug nele é comandos de terminal, e a saída de emergência é
@@ -2915,7 +2915,7 @@ errado custa um hook que libera tudo.
 nunca um terceiro valor.** Em Node o terceiro valor é fácil de produzir por acidente: exceção
 não tratada termina o processo com `1`. Se o harness trata "diferente de zero" como bloqueio, o
 hook bloqueia por um motivo que não é o dele; se trata só `2`, o `1` vira hook que não faz nada.
-Os dois helpers estão em `scripts/payload.mjs`. `lerStdin()` lê o `stdin` inteiro e nunca lança —
+Os dois helpers estão em `.claude/hooks/payload.mjs`. `lerStdin()` lê o `stdin` inteiro e nunca lança —
 TTY, erro de stream e um teto de 2 s resolvem para o que houver. `lerEvento()` devolve objeto ou
 `null`, nesta ordem: apara o texto (o `trim()` leva o BOM junto), trata vazio como `null`, deixa o
 `JSON.parse` que lança virar `null`, e no fim só devolve o que for objeto e não for array.
@@ -2928,7 +2928,7 @@ todos. **Armadilha:** a guarda escrita às pressas — `try { ev = JSON.parse(br
 
 ## 15.6 Um hook completo
 
-`scripts/hooks/bloqueia-destrutivo.mjs` é o hook que a armadilha da F2 promete — *"isso vai num
+`.claude/hooks/bloqueia-destrutivo.mjs` é o hook que a armadilha da F2 promete — *"isso vai num
 hook de bloqueio, não numa instrução em prosa"*. `PreToolUse`, matcher `Bash`, limite de
 segurança, logo fechado: `0` libera, `2` bloqueia. Ele barra reset de banco, DDL `drop`/`truncate`,
 `rm -rf` e `git push --force` — com lookahead que libera `--force-with-lease`, a variante que
@@ -2946,21 +2946,22 @@ Ao lado dele, dois hooks de matcher `Write|Edit`: `protege-segredo.mjs` barra es
 arquivo que só tem nomes de variável é o falso positivo que faz o leitor desregistrar o hook; e
 `protege-catraca.mjs` barra escrita em baseline (`*baseline*.json`, `*baseline*.txt`) e em
 `.catraca/`. **O registro dos três** está em `scripts/README.md`: o comando é `node
-scripts/hooks/x.mjs`, **nunca `./x.mjs`** — o shebang não é executável no Windows, e fica no
+.claude/hooks/x.mjs`, **nunca `./x.mjs`** — o shebang não é executável no Windows, e fica no
 arquivo para o dia em que o hook rodar no CI. Barra normal sempre.
 
 ## 15.7 O portão `hooks:check` — os três casos
 
 O dicionário torna `hooks:check` obrigatório nos quatro perfis (§2.7): *todo hook responde certo
-nos três casos, inclusive stdin `null`*. Caminho feliz sai `0`; o comando que o hook existe para
+nos quatro payloads ilegíveis e está registrado no `settings.json`*. Cada hook tem três tipos de
+caso: caminho feliz sai `0`; o comando que o hook existe para
 barrar sai com o código de bloqueio; payload ilegível — `null`, vazio, JSON quebrado, `[]` — sai
 conforme a **classe** do hook: fechado `2`, aberto `0`. **O terceiro caso é o que separa um hook
 de um enfeite:** `1` significa a guarda ingênua da 15.5, e `0` num hook de limite significa
 fail-open sem ter sido projetado para isso.
 
 Testar à mão não sobrevive a sexta-feira. `scripts/hooks-check.mjs` roda cada hook nos casos
-declarados mais os quatro ilegíveis, e reprova um `.mjs` em `scripts/hooks/` sem caso declarado.
-Saída de `node scripts/hooks-check.mjs` nesta máquina (Node v24.14.0, Windows 11), recortada:
+declarados mais os quatro ilegíveis, e reprova um `.mjs` em `.claude/hooks/` sem caso declarado.
+Saída de `node scripts/hooks-check.mjs` em `template-projeto/` (Node v24.14.0, Windows 11), recortada:
 
 ```
 bloqueia-destrutivo.mjs  (limite fechado)
@@ -2971,24 +2972,26 @@ PASS  stdin `null` literal: saiu 2, esperado 2 (fechado)
 PASS  stdin vazio: saiu 2, esperado 2 (fechado)
 PASS  JSON quebrado: saiu 2, esperado 2 (fechado)
 PASS  array no lugar de objeto: saiu 2, esperado 2 (fechado)
-[+6 casos deste hook, os 13 de protege-segredo, os 13 de protege-catraca e a checagem de que
+[+15 casos deste hook, os 19 de protege-segredo, os 13 de protege-catraca e a checagem de que
 os três têm caso declarado]
 
 registro no harness
-FAIL  ...\.claude\settings.json nao existe: registro NAO verificado (nenhum hook provado ligado)
+PASS  caminho registrado existe no disco: ${CLAUDE_PROJECT_DIR}/.claude/hooks/bloqueia-destrutivo.mjs
+PASS  registrado em settings.json e resolve no disco: bloqueia-destrutivo.mjs
+[+7 casos de registro]
 
-53/54 casos passaram
+66/66 casos passaram
 ```
 
 O registro é a última seção do portão de propósito: **hook desregistrado é hook que não roda.**
-Sem `settings.json` ela reprova — a primeira versão imprimia `SKIP` ali e fechava `53/53`
-verde, sem provar hook ligado nenhum (15.10). Onde o `settings.json` existe, cada caminho `.mjs`
-citado nele e cada hook declarado vira mais um caso, e desligar passa a exigir um diff. O dicionário põe `hooks:check` no tier 3 (§2.7); medido nesta máquina, **2,2 s para os
-53 casos** — mediana de sete execuções, método em `scripts/README.md`.
+Sem `settings.json` ela reprova — a primeira versão imprimia `SKIP` ali e fechava verde, sem
+provar hook ligado nenhum (15.10). Onde o `settings.json` existe, cada caminho `.mjs`
+citado nele e cada hook declarado vira mais um caso, e desligar passa a exigir um diff. O dicionário põe `hooks:check` no tier 3 (§2.7); medido no Windows 11 com Node 24, **2,0 s para os
+66 casos** — mediana de sete execuções, método em `scripts/README.md`.
 
 ## 15.8 O catálogo: nove hooks que valem a pena
 
-Os três primeiros existem em `scripts/hooks/` e passam no `hooks:check`. Os outros seis são
+Os três primeiros existem em `.claude/hooks/` e passam no `hooks:check`. Os outros seis são
 projeto: só entram depois de nascer pela 15.9, com o caso de teste do incidente (perfis do §4).
 
 | # | Hook | Evento | Modo | O que fica impossível depois dele | Perfil |

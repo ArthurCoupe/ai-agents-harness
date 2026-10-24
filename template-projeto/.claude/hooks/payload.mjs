@@ -1,4 +1,4 @@
-// scripts/payload.mjs
+// .claude/hooks/payload.mjs
 // Leitura segura do evento do harness. Zero dependencia externa.
 // Dicionario secao 5: "Todo hook le stdin com o helper de leitura segura".
 //

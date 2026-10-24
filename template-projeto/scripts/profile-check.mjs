@@ -54,7 +54,7 @@ const SINAIS = {
     // 1. o dado em si: tabela de PESSOA que nao usa o sistema. E a definicao do perfil
     //    (dicionario 4, P2), nao uma consequencia dela. So casa em criacao de tabela — um
     //    `const contacts = ...` em codigo nao e sinal de nada.
-    /create\s+table\s+(if\s+not\s+exists\s+)?[a-z_."]*\b(leads?|lead_touches|prospects?|contatos?|contacts?|oportunidades?|opportunities)\b/i,
+    /create\s+table\s+(if\s+not\s+exists\s+)?[a-z_."]*\b(leads?|prospects?|contatos?|contacts?|oportunidades?|opportunities)\b/i,
     // 2. a tabela que so existe quando a importacao em lote virou processo
     /\bimport_jobs?\b/,
   ],
@@ -63,8 +63,8 @@ const SINAIS = {
 // Sinal que so conta JUNTO de um sinal principal do mesmo perfil. Biblioteca de planilha ou
 // CSV diz COMO o dado chega, nao DE QUEM ele e (P2): APP le planilha o tempo todo — ETL de
 // ERP, extrato financeiro, relatorio exportado. Sozinha ela nao reprova, so avisa.
-// CALIBRAGEM (26/09): um APP com ETL de planilhas financeiras e de producao (47 arquivos com
-// xlsx/exceljs, nenhuma tabela de pessoa) -> antes: saida 2, "o codigo ja e CRM", e a unica
+// CALIBRAGEM: um APP que importa planilhas (dezenas de arquivos com xlsx/exceljs, nenhuma
+// tabela de pessoa) -> antes: saida 2, "o codigo ja e CRM", e a unica
 // saida era duas excecoes, que o proprio script le como perfil errado. depois: saida 0 com
 // AVISO. Com `create table leads` no mesmo repositorio -> saida 2, com as planilhas listadas.
 const SO_JUNTO = {

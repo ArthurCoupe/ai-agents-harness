@@ -38,10 +38,10 @@ RLS, pagamento, webhook, dado de saúde) vai com `model: opus`; no resto, o padr
 Esta skill decide, antes do despacho. **Subagente nativo (ferramenta Agent) é o padrão.**
 Orquestrador externo (outro processo coordenando agentes) só quando pelo menos um vale:
 - a tarefa vai para agente **não-Claude** (outro CLI ou outro provedor);
-- o papel precisa **persistir entre tarefas** (o mesmo Engenheiro ou Revisor recebendo a próxima).
+- o papel precisa **persistir entre tarefas** (o mesmo implementador ou revisor recebendo a próxima).
 
 Fora disso, orquestrador externo não entra, e nunca em tarefa pequena. Com ele: um worktree por
-Engenheiro, só o orquestrador comita, a pasta de estado dele no `.gitignore` do repo, e mensagem
+implementador, só o orquestrador comita, a pasta de estado dele no `.gitignore` do repo, e mensagem
 de agente nunca vale como aprovação humana.
 
 ## 3. Marque cada tarefa

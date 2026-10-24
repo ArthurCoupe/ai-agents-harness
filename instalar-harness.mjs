@@ -122,7 +122,7 @@ const SINAIS = {
   APP: [/supabase\.auth\./, /signInWith\w*\(/, /next-auth/, /jsonwebtoken/, /\b(bcrypt|argon2)\b/, /auth\.uid\(\)/],
   SAAS: [/\b(tenant_id|tenantId)\b/, /\b(organization_id|organizationId)\b/, /\b(workspace_id|workspaceId)\b/],
   CRM: [
-    /create\s+table\s+(if\s+not\s+exists\s+)?[a-z_."]*\b(leads?|lead_touches|prospects?|contatos?|contacts?|oportunidades?|opportunities)\b/i,
+    /create\s+table\s+(if\s+not\s+exists\s+)?[a-z_."]*\b(leads?|prospects?|contatos?|contacts?|oportunidades?|opportunities)\b/i,
     /\bimport_jobs?\b/,
   ],
 };

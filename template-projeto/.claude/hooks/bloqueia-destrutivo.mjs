@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// scripts/hooks/bloqueia-destrutivo.mjs
+// .claude/hooks/bloqueia-destrutivo.mjs
 // Evento: PreToolUse  ·  matcher: Bash
 //
 // LIMITE DE SEGURANCA -> falha FECHADO (dicionario secao 5).

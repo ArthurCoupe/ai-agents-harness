@@ -65,8 +65,8 @@ e na Parte 12.3 — nenhum é reproduzido aqui. Quatro consequências específic
 **O `lint` deste perfil cobre `@typescript-eslint/no-misused-promises` com checagem de tipos
 nos caminhos de servidor** — rota da sua API, server action, job, edge function: tudo que roda
 com segredo. A regra exige o projeto TypeScript carregado pelo parser, porque sem isso ela não
-vê o tipo `Promise` e não pega o caso. Origem: lição de 2026-08-23 de um CRM em produção, `await` faltando em
-`cronAutorizado` (função async) passou por `tsc`, `eslint` e `build` por dias, porque `Promise`
+vê o tipo `Promise` e não pega o caso. Origem: lição de um CRM em produção, o `await` faltando
+numa função async de autorização passou por `tsc`, `eslint` e `build` por dias, porque `Promise`
 é truthy (ver `crm.md` §3). Liga como toda regra nova de lint (CLAUDE.md, Convenções): nasce em
 `"warn"`, sobe para `"error"` só quando a contagem de violações chega a zero — numa base
 existente isso é a catraca da Parte 14.4.

@@ -11,7 +11,7 @@ gravado não volta atrás.
 
 **Nível: D1** — F2 (modelagem de dados e migrations) é D1 no blueprint: o desenho é seu, o agente rascunha. Nada nasce D3.
 **Portão que fecha o trabalho deste agente:** `test:rls` (dicionário 2.2) prova o isolamento **depois** que a migration existe — não prova que o modelo está certo, e é por isso que o nível não sobe.
-**Não despache este agente quando:** a migration é destrutiva (`DROP`, `DROP COLUMN`, backfill que sobrescreve) e não existe plano de backup aprovado por você. Dado gravado não volta atrás, e `scripts/hooks/bloqueia-destrutivo.mjs` barra o comando, nunca a decisão.
+**Não despache este agente quando:** a migration é destrutiva (`DROP`, `DROP COLUMN`, backfill que sobrescreve) e não existe plano de backup aprovado por você. Dado gravado não volta atrás, e `.claude/hooks/bloqueia-destrutivo.mjs` barra o comando, nunca a decisão.
 
 ## Schema
 

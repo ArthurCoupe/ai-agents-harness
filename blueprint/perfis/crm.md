@@ -133,9 +133,8 @@ test:authz  test:idor  bundle:scan  test:input  test:logging  test:dedupe
 nos caminhos de servidor** — rota de API, job de importação e de expurgo, edge function: tudo
 que roda com service role ou outro segredo. A regra exige o projeto TypeScript carregado pelo
 parser, porque sem isso ela não vê o tipo `Promise` e não pega o caso. **Foi neste perfil, num
-CRM em produção, em 2026-08-23, que o `await` faltando em `cronAutorizado` — função async —
-passou por `tsc`, `eslint` e `build` por dias: `Promise` é truthy, então a condição sempre
-passava.** A correção foi o `await` e a regra
+CRM em produção, que o `await` faltando numa função async de autorização passou por `tsc`,
+`eslint` e `build` por dias: `Promise` é truthy, então a condição sempre passava.** A correção foi o `await` e a regra
 `no-misused-promises` type-aware ligada nos caminhos de servidor. Liga como toda regra nova de
 lint (CLAUDE.md, Convenções): nasce em `"warn"`, sobe para `"error"` só quando a contagem de
 violações chega a zero — numa base existente isso é a catraca da Parte 14.4. **Regra derivada:
@@ -156,7 +155,7 @@ palavra, *eliminação de titular apaga de verdade, inclusive backup, réplica, 
 `test:erasure` é ⚠️ em APP e SAAS e **✅ em CRM**: aqui não existe a hipótese "não há dado
 pessoal"; `size:check` segue ⚠️ (§2.4). E **o sinal que classifica o repositório como CRM é
 estreito por escolha declarada**: criação de tabela de pessoa que não usa o sistema (`create
-table` de `leads`, `lead_touches`, `prospects`, `contatos`, `contacts`, `oportunidades` ou
+table` de `leads`, `prospects`, `contatos`, `contacts`, `oportunidades` ou
 `opportunities`, só em contexto de `create table`), importação em lote **a partir de arquivo**
 e a tabela `import_jobs`; `createMany` e `\bcpf\b` ficam de fora porque disparam em SAAS
 legítimo (ver `scripts/profile-check.mjs` e `scripts/README.md`), e portão que grita no caso

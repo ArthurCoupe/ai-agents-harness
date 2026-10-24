@@ -118,10 +118,10 @@ na conta), **n = 7**:
 
 ```powershell
 1..7 | ForEach-Object { [int](Measure-Command { node scripts/hooks-check.mjs }).TotalMilliseconds }
-2173  2191  2226  2188  2162  2151  2191   ->  min 2151 · mediana 2188 · máx 2226 ms
+1920  1966  2166  1963  1975  1995  2227   ->  min 1920 · mediana 1975 · máx 2227 ms
 ```
 
-**Limite declarado: abaixo de 4 s para os 4 casos, ou ~70 ms por caso.** O segundo número é o
+**Limite declarado: abaixo de 4 s para os 66 casos, ou ~60 ms por caso.** O segundo número é o
 que sobrevive a acrescentar hook: quase todo o tempo é o `spawn` de um Node por caso. Cabe no
 tier 3 (`verify:ci`, teto 10 min) da §3 sem discussão, e caberia no teto de 90 s do tier 2.
 **Meça de novo antes de citar isto em outro lugar:** outra máquina, outra contagem, outro
@@ -131,9 +131,6 @@ número.
 
 Registrados aqui porque a regra é acrescentar ao dicionário antes de usar, não inventar:
 
-1. **Caminho dos hooks.** A §6 registra `.claude/hooks/payload.mjs` e `.claude/hooks/*.mjs`;
-   estes arquivos vivem em `scripts/` e `.claude/hooks/`. Escolha um e corrija o outro lado
-   antes de copiar para um projeto — `hooks-check.mjs` varre `.claude/hooks/`.
-2. **`.perfil-excecoes` não está na §6.** O dicionário registra `.perfil`, mas não o arquivo
+1. **`.perfil-excecoes` não está na §6.** O dicionário registra `.perfil`, mas não o arquivo
    de exceções que `profile:check` lê. Mesma lacuna para `.lintbaseline.json` e `.catraca/`,
    que `protege-catraca` barra e a §6 não registra.

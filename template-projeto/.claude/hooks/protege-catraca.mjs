@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// scripts/hooks/protege-catraca.mjs
+// .claude/hooks/protege-catraca.mjs
 // Evento: PreToolUse  ·  matcher: Write|Edit
 //
 // LIMITE DE SEGURANCA -> falha FECHADO (dicionario secao 5).
