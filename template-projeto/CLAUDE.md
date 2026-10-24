@@ -92,7 +92,7 @@ fronteiras de arquitetura que nao podem ser cruzadas.]
 - Skill `onda-paralela` (escopo de usuario) — condicoes exatas em que despachar varios
   implementadores em paralelo continua seguro (ondas, `Files:`, `Depends-on:`). Nao ha
   regra por projeto: ela carregava em toda sessao e em todo subagente e duplicava a skill.
-- Memoria de longo prazo: fora do repo (auto memory do Claude Code, ou um `CLAUDE.local.md`
+- Memoria de longo prazo: fora do repo (memoria automatica do agente, ou um `CLAUDE.local.md`
   ignorado pelo git que importa suas notas). Nada de memoria dentro do repo.
 - `docs/adr/NNNN-*.md` — uma ADR por decisao estruturante. Portao que nao se aplica a este
   perfil aponta para a ADR que justifica.

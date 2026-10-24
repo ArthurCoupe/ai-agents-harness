@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// instalar-usuario.mjs - leva a camada de usuario do Claude Code de usuario/ (neste repositorio) para
+// instalar-usuario.mjs - leva a camada de usuario do agente de IA de usuario/ (neste repositorio) para
 // ~/.claude (CLAUDE.md global, rules, hooks, agents, skills, mods e o fragmento do settings.json),
 // e traz de volta com --exportar. Duas maquinas, uma fonte versionada.
 //
@@ -25,7 +25,7 @@ const ARQ_SETTINGS = join(DESTINO, 'settings.json');
 
 // ---------------------------------------------------------------- ajuda ----
 const AJUDA = `
-instalar-usuario.mjs — sincroniza a camada de usuario do Claude Code entre usuario/ (no repo)
+instalar-usuario.mjs — sincroniza a camada de usuario do agente de IA entre usuario/ (no repo)
 e ~/.claude/ (nesta maquina).
 
   node ${RAIZ}\\instalar-usuario.mjs [--dry-run] [--sobrescrever]

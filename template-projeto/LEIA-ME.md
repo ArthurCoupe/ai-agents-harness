@@ -15,7 +15,7 @@ define nenhum dos tres.
 | `.claude/hooks/` | raiz | nao |
 | `.claude/settings.json` | raiz | so se ja existir um — nesse caso funda os blocos `hooks` a mao |
 
-Memoria de longo prazo: fora do repo (auto memory do Claude Code, ou um `CLAUDE.local.md`
+Memoria de longo prazo: fora do repo (memoria automatica do agente, ou um `CLAUDE.local.md`
 ignorado pelo git que importa suas notas). Nada de memoria dentro do repo.
 
 Copiado, confira que a maquinaria responde antes de ligar qualquer portao:

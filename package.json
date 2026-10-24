@@ -1,7 +1,7 @@
 {
-  "name": "claude-code-harness",
+  "name": "ai-agents-harness",
   "private": true,
-  "description": "Harness para desenvolver com Claude Code: agentes especialistas, hooks de limite testados, portões por perfil de projeto e revisão em duas passadas.",
+  "description": "Harness para desenvolver com agentes de IA: 24 agentes especialistas, hooks de limite testados, portões por perfil de projeto e revisão em duas passadas.",
   "license": "MIT",
   "scripts": {
     "test": "node template-projeto/scripts/hooks-check.mjs && node instalar-usuario.test.mjs",

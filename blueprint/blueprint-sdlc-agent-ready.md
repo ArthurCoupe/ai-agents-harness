@@ -3148,6 +3148,4 @@ defensiva escrita às pressas (Parte 10).
 - Opengrep — https://github.com/opengrep/opengrep
 - Bandit — https://github.com/pycqa/bandit
 - OWASP ZAP — https://github.com/zaproxy/zaproxy
-- Loop engineering (Claude Code) — https://claude.com/blog/getting-started-with-loops
-- Steering Claude Code — https://claude.com/blog/steering-claude-code-skills-hooks-rules-subagents-and-more
 - LGPD (Lei 13.709/2018) e guias da ANPD

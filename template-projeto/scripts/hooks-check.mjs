@@ -199,7 +199,7 @@ if (!existsSync(SETTINGS)) {
     relatar(existsSync(alvo), `caminho registrado existe no disco: ${cmd}`);
   }
 
-  // Caminho relativo resolve no disco a partir da RAIZ e passava acima, mas o Claude Code roda
+  // Caminho relativo resolve no disco a partir da RAIZ e passava acima, mas o agente roda
   // o hook na pasta atual da sessao: depois de um cd para subpasta o node nao acha o arquivo,
   // sai 1, e saida 1 nao bloqueia nada. Provado num projeto real em 2026-10-05.
   for (const cmd of comandos) {
